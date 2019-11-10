@@ -3,7 +3,7 @@ import json
 from .basic import __return, __parse_column_args, __build_query
 
 valid_format = {'text', 'json'}
-valid_type = {'str', 'set', 'dict'}
+valid_type = {'str', 'list', 'dict'}
 match_mode = {'AndMatch', 'OrMatch', 'BestMatch'}
 type_d = {"num":"-numfieldindex","date":"-dateindex","text":"text","weighted_column":"-title","time":"-timeindex"}
 map_type = {v: k for k, v in type_d.items()}
@@ -66,7 +66,7 @@ def Drop(db):
 
 def Insert(db, record, record_format='text', rb=''):
     if type(record).__name__ not in valid_type :
-        return __return(False, 'Invalid record type: record type must be str, set or dict')
+        return __return(False, 'Invalid record type: record type must be str, dict or a list of dict')
     elif record_format not in valid_format :
         return __return(False, 'Invalid record format: format must be text or json')
     else :
