@@ -50,7 +50,9 @@ def __get_db_col(db):
         d = {}
         for i in range(0,len(l),2):
             d[l[i]] = l[i+1][1:-1].split(',')
-        return d['-fieldindex'] + d['-numfieldindex']
+        fieldindex = d['-fieldindex'] if '-fieldindex' in d else []
+        numfieldindex = d['-numfieldindex'] if '-numfieldindex' in d else []
+        return fieldindex + numfieldindex
 
 def __build_query(db, d):
     if not(len(d.keys()) == 2 and 'val' in d and 'col' in d):
@@ -67,7 +69,7 @@ def __build_query(db, d):
         else:
             col_list.append(__parse_to_gaisrec(c))
     for i in range(len(d['val'])):
-        for val in d['val'][i]:
-            query_str += col_list[i] + val + ','
+        #for val in d['val'][i]:
+        query_str += col_list[i] + d['val'][i] + ','
 
     return query_str.rstrip(',')
