@@ -155,7 +155,7 @@ def Select(db, pattern={}, filter_args={}, mode='', page_cnt=10, page=1, order_b
         if order_by != '' :
             cmd += '&orderby=%s' % order_by
 
-        if order == 'increasing' || order == 'asc':
+        if order == 'increasing' or order == 'asc':
             cmd += '&order=increasing'
 
         if type(filter_args) == dict and len(filter_args) != 0 :
@@ -187,7 +187,7 @@ def Search(db, term_list='', filter_args={}, mode='', page_cnt=10, page=1, order
         if order_by != '' :
             cmd += '&orderby=%s' % order_by
 
-        if order == 'increasing' || order == 'asc':
+        if order == 'increasing' or order == 'asc':
             cmd += '&order=increasing'
 
         if type(filter_args) == dict and len(filter_args) != 0 :
