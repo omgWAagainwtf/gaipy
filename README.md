@@ -1,5 +1,6 @@
 # Gaipy 
-Gaipy為NUDB的python版API，提供8個常用function，方便使用者進行資料庫操作
+Gaipy為NUDB的python版API，提供8個常用function，方便使用者進行資料庫操作，詳請可以參考smaply檔案
+
 ## 資料型態
 * text
     * 文字，資料庫內會自動斷詞
@@ -39,9 +40,18 @@ Gaipy為NUDB的python版API，提供8個常用function，方便使用者進行�
     * Usage:
         ```
         DB = 'all_col_no_weight'
-        create_arg = {'title':'text','content':'text','post_time':'time','post_date':'date','likes':'num'}
-        weighted_col = ['title','content']
-        gp.Create(DB, create_arg, weighted_col)
+        create_arg = {
+                'title': 'text',
+                'content': 'text',
+                'post_time': 'time',
+                'post_date': 'date',
+                'likes': 'num'
+            }
+        weighted_col = [
+                'title',
+                'content'
+            ]
+        Create(DB, create_arg, weighted_col)
         ```        
 * **Insert(db, record, record_format, rb)**
     * 功能: 插入單/多筆資料
@@ -64,9 +74,12 @@ Gaipy為NUDB的python版API，提供8個常用function，方便使用者進行�
     * Usage:
         ```
         db = 'all_col_no_weight'
-        record = '@title:好麻煩@content:好不想寫Usage喔@title:妹控好壞@content:gary87'
-        rb = '@title:'
-        gaipy.Insert(db, record, 'text', rb)
+        record = {
+            'title': '好麻煩',
+            'content': '好不想寫Usage喔',
+            'likes': 1
+        }
+        Insert(db, record, 'json')
         ```
 * **Update(db, rid, new_record, modify_all, record_format, getrec)**
     * 功能: 更動單筆資料特定欄位或全部取代
@@ -98,7 +111,7 @@ Gaipy為NUDB的python版API，提供8個常用function，方便使用者進行�
         ```
         db = 'all_col_no_weight'
         new_record = '@title:啊呀不小心打錯'
-        gaipy.Update(db, 2, new_record, False)
+        Update(db, 2, new_record, False)
         ```
 * **Show(db)**
     * 功能: 查看資料庫的欄位有哪些
@@ -156,7 +169,27 @@ Gaipy為NUDB的python版API，提供8個常用function，方便使用者進行�
         * 說明: 降序或升序 ('asc' or 'desc')
     * Usage:
         ```
-        Select(DB,{'val':['標題','內容'],'col':['title','content']},filter_args = {'val:':['>10'],'col':['viewcount']})
+        Select(
+                DB,
+                {
+                    'val': [
+                            '標題-1',
+                            '內容-2',
+                            '標題-3',
+                            '內容-4',
+                        ],
+                    'col': [
+                        'title-1',
+                        'content-2',
+                        'title-3',
+                        'content-4',
+                        ]
+                },
+                filter_args={
+                    'val: ':['>10'],
+                    'col': ['viewcount'],
+                },
+            )
         ```
     * Return:
         * Type: json格式，可用dict解析
@@ -201,7 +234,13 @@ Gaipy為NUDB的python版API，提供8個常用function，方便使用者進行�
         ```
         db = "abc"
         keyword = "蓋世,搜尋引擎"
-        gaipy.Search(db, keyword, filter_args = {'val:':['>10'],'col':['viewcount']})
+        gaipy.Search(
+            db,
+            keyword,
+            filter_args={
+                'val: ':['>10'], 'col':['viewcount']
+            }
+        )
         ```
 * **Del(db, rid)**
     * 功能: 刪除list中的rid資料
@@ -215,5 +254,5 @@ Gaipy為NUDB的python版API，提供8個常用function，方便使用者進行�
         * 說明: rid 可透過Select查詢拿到，或是insert時紀錄。
     * Usage:
         ```
-        Del(DB,[1,2,3])
+        Del(DB, [1, 2, 3])
         ```
