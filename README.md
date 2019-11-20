@@ -98,7 +98,7 @@ Gaipy為NUDB的python版API，提供8個常用function，方便使用者進行�
         ```
         db = 'all_col_no_weight'
         new_record = '@title:啊呀不小心打錯'
-        gaipy.Insert(db, 2, new_record, False)
+        gaipy.Update(db, 2, new_record, False)
         ```
 * **Show(db)**
     * 功能: 查看資料庫的欄位有哪些
