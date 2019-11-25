@@ -23,8 +23,8 @@ def Create(db, args_dict={},weighted_col=[]):
     if len(weighted_col) != 0:
         wcs = ','.join(__parse_to_gaisrec(str(i)) for i in weighted_col)
         wcs = "-title '" + wcs + "'"
-    args = __parse_column_args(args_dict)
-
+    args = __parse_column_args(args_dict)    
+    
     cmd = domain +'create?name=%s&arg=%s %s' % (db, args,wcs)
     response = requests.get(cmd)
     gaisdb_res =response.json()
@@ -51,7 +51,7 @@ def Show(db):
         for k in d:
             if k != '-indexfield' and k != '-title' and k != '-fieldindex':
                 not_text.update(d[k])
-
+        
         d['text'] = list(set(d['-indexfield']) - not_text)
         print(f.format(type = 'type',column = 'column'))
         print("-"*80)
@@ -93,7 +93,7 @@ def Insert(db, record, record_format='text', rb=''):
         response = requests.get(cmd)
         gaisdb_res = response.json()
         if response.status_code == requests.codes.ok:
-            return __return(True, 'insert successed', json.dumps(gaisdb_res['result'],ensure_ascii=False))
+            return __return(True, 'insert successed', gaisdb_res['result'])
         else:
             return __return(False, gaisdb_res['error']['message'])
 
@@ -121,20 +121,19 @@ def Update(db, rid=0, new_record='', modify_all=False, record_format='text', get
         if getrec == True :
             cmd += '&out=json&getrec=y'
         else :
-            cmd += '&getrec=n'
+            cmd += 'getrec=n'
 
         response = requests.get(cmd)
         gaisdb_res = response.json()
-
-        if response.status_code == requests.codes.ok:
-            return __return(True, 'update sucessed', json.dumps(gaisdb_res['result'],ensure_ascii=False))
-        else:
-            if gaisdb_res['error']['status'] == 400:
+        if response.status_code == requests.codes.ok :
+            return __return(True, 'update sucessed', gaisdb_res['result'])
+        else :
+            if gaisdb_res['error']['status'] == 400 :
                 return __return(False, 'input new record does not match your record format')
             else :
                 return __return(False, 'rid not found')
 
-def Select(db, pattern={}, filter_args={}, mode='', page_cnt=10, page=1, order_by='', order='decreasing'):
+def Select(db, pattern={}, filter_args={}, mode='', page_cnt=10, page=1, order_by='', order='desc'):
     if page_cnt < 1 :
         return __return(False, 'page count must be more than 1')
     elif page < 1 :
@@ -146,7 +145,7 @@ def Select(db, pattern={}, filter_args={}, mode='', page_cnt=10, page=1, order_b
             return __return(False, response['error'])
 
         cmd = domain + 'query?db=%s&p=%s&ps=%s&out=json' % (db, page, page_cnt)
-
+        
         if type(pattern) == dict and len(pattern) != 0 :
             cmd += '&q=%s' % __build_query(db, pattern)
 
@@ -154,23 +153,22 @@ def Select(db, pattern={}, filter_args={}, mode='', page_cnt=10, page=1, order_b
             cmd += '&matchmode=%s' % mode
 
         if order_by != '' :
-            cmd += '&orderby=%s' % order_by
+            cmd += '&order_by=%s' % order_by
 
-        if order == 'increasing' or order == 'asc':
-            cmd += '&order=increasing'
+        if order == 'asc' :
+            cmd += '&order=%s' % order
 
         if type(filter_args) == dict and len(filter_args) != 0 :
             cmd += '&filter=%s' % __build_query(db, filter_args)
-
+        
         response = requests.get(cmd)
         gaisdb_res = response.json()
-
-        if response.status_code is requests.codes.ok:
-            return __return(True, 'complete search', json.dumps(gaisdb_res['result'],ensure_ascii=False))
-        else:
+        if response.status_code == requests.codes.ok :
+            return __return(True, 'complete search', gaisdb_res['result'])
+        else :
             return __return(False, gaisdb_res['error'])
 
-def Search(db, term_list='', filter_args={}, mode='', page_cnt=10, page=1, order_by='', order='decreasing'):
+def Search(db, term_list='', filter_args={}, mode='', page_cnt=10, page=1, order_by='', order='desc'):
     if page_cnt < 1 :
         return __return(False, 'page count must be more than 1')
     elif page < 1 :
@@ -182,25 +180,24 @@ def Search(db, term_list='', filter_args={}, mode='', page_cnt=10, page=1, order
             return __return(False, response['error'])
 
         cmd = domain + 'query?db=%s&q=%s&p=%s&ps=%s&out=json' % (db, term_list, page, page_cnt)
-
+        
         if mode in match_mode :
             cmd += '&matchmode=%s' % mode
 
         if order_by != '' :
-            cmd += '&orderby=%s' % order_by
+            cmd += '&order_by=%s' % order_by
 
-        if order == 'increasing' or order == 'asc':
-            cmd += '&order=increasing'
+        if order == 'asc' :
+            cmd += '&order=%s' % order
 
         if type(filter_args) == dict and len(filter_args) != 0 :
             cmd += '&filter=%s' % __build_query(db, filter_args)
 
         response = requests.get(cmd)
         gaisdb_res = response.json()
-
-        if response.status_code is requests.codes.ok:
-            return __return(True, 'complete search', json.dumps(gaisdb_res['result'],ensure_ascii=False))
-        else:
+        if response.status_code == requests.codes.ok :
+            return __return(True, 'complete search', gaisdb_res['result'])
+        else :
             return __return(False, gaisdb_res['error'])
 
 def Del(DB, rid = []):
@@ -214,31 +211,4 @@ def Del(DB, rid = []):
     if res.status_code == requests.codes.ok:
         return __return(True, 'deleted')
     else:
-        return __return(True, 'No such record in DB %s' % DB, resjson['error'])
-
-def ExactSearch(DB, col='',pattern='', filter_args={}, mode='', page_cnt=10, page=1, order_by='', order='decreasing'):
-    if page_cnt < 1:
-        return __return(False, 'page count must be more than 1')
-    elif page < 1:
-        return __return(False, 'page must be more than 1')
-    else:
-        cmd = domain + 'getDBInfo?db=%s' % DB
-        response = requests.get(cmd).json()
-        if 'error' in response:
-            return __return(False, response['error'])
-        cmd = domain + 'query?db=%s&pat=%s%s&p=%s&ps=%s&out=json' % (DB, __parse_to_gaisrec(col), pattern, page, page_cnt)
-        if order_by != '':
-            cmd += '&orderby=%s' % order_by
-
-        if order == 'increasing' or order == 'asc':
-            cmd += '&order=increasing'
-        if type(filter_args) is dict and len(filter_args) != 0:
-            cmd += '&filter=%s' % __build_query(DB, filter_args)
-
-        response = requests.get(cmd)
-        gaisdb_res = response.json()
-        if response.status_code is requests.codes.ok:
-            return __return(True, 'complete search', json.dumps(gaisdb_res['result'],ensure_ascii=False))
-        else:
-            return __return(False, gaisdb_res['error'])
-          
+        return __return(True, 'No such record in DB %s'%DB, resjson['error'])
