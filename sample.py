@@ -2,7 +2,7 @@ from gaipy import *
 
 
 # Create
-DB = 'test'
+DB = 'classify'
 create_arg = {
         'title': 'text',
         'content': 'text',
@@ -73,9 +73,16 @@ print(status)
 print("------")
 print()
 
-# Drop
+Drop
 status = Drop('test')
 print("---Drop---")
+print(status)
+print("------")
+print()
+
+# ExactSearch
+status = ExactSearch(DB='classify',pattern="季戰績",col='content')
+print("---ExactSearch---")
 print(status)
 print("------")
 print()
