@@ -120,7 +120,7 @@ def Update(db, rid=0, new_record='', modify_all=False, record_format='text', get
 
         if getrec == True :
             cmd += '&out=json&getrec=y'
-        else :
+        else:
             cmd += '&getrec=n'
 
         response = requests.get(cmd)
@@ -216,7 +216,7 @@ def Del(DB, rid = []):
     else:
         return __return(True, 'No such record in DB %s' % DB, resjson['error'])
 
-def ExactSearch(DB, col='',pattern='', filter_args={}, mode='', page_cnt=10, page=1, order_by='', order='decreasing'):
+def ExactSearch(DB, col='', pattern='', filter_args={}, mode='', page_cnt=10, page=1, order_by='', order='decreasing'):
     if page_cnt < 1:
         return __return(False, 'page count must be more than 1')
     elif page < 1:
@@ -241,4 +241,14 @@ def ExactSearch(DB, col='',pattern='', filter_args={}, mode='', page_cnt=10, pag
             return __return(True, 'complete search', json.dumps(gaisdb_res['result'],ensure_ascii=False))
         else:
             return __return(False, gaisdb_res['error'])
-          
+
+def QueryRid(DB, rid=[]):
+    url = 'http://gais.ccu.edu.tw:5801/nudb/rget'
+    if type(rid) != list:
+        return __return(False, 'Type Error!, Please pass list of rid.')
+    rids = ','.join(str(i) for i in rid)
+    argData = {'db': DB, 'rid': rids}
+    res = requests.post(url, data=argData)
+    resjson = res.json()
+    return __return(True, 'True', resjson)
+
