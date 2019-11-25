@@ -1,5 +1,4 @@
-from gaipy import *
-
+import gaipy
 
 # Create
 DB = 'classify'
