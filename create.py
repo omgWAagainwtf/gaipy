@@ -1,12 +1,13 @@
 import argparse
 import json
 import ast
-from gaipy import Create 
+from gaipy import Create
 
 parser = argparse.ArgumentParser(description='Gais DB Create Tools')
 parser.add_argument('-d', '--database', dest='database', type=str)
 parser.add_argument('-c', '--create-arg', dest='create_arg', type=str)
-parser.add_argument('-w', '--weighted-col', dest='weighted_arg', type=str)
+parser.add_argument('-w', '--weighted-col',
+                    dest='weighted_arg', type=str, default='[]')
 
 args = parser.parse_args()
 

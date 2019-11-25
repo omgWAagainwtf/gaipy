@@ -14,11 +14,15 @@ args = parser.parse_args()
 
 res_db = args.database
 res_rid = args.rid
-res_record_arg = args.create_arg
+res_record_arg = args.record_arg
 res_modify_all = args.modify_all
 res_get_rec = args.get_record
 
-status = Update(res_db, res_rid, res_record_arg,
-                res_modify_all, 'text', res_get_rec)
+if res_modify_all == True:
+    status = Update(res_db, res_rid, res_record_arg,
+                    res_modify_all, 'json', res_get_rec)
+else:
+    status = Update(res_db, res_rid, res_record_arg,
+                    res_modify_all, 'json', res_get_rec)
 
 print(status)

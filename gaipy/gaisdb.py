@@ -23,8 +23,8 @@ def Create(db, args_dict={},weighted_col=[]):
     if len(weighted_col) != 0:
         wcs = ','.join(__parse_to_gaisrec(str(i)) for i in weighted_col)
         wcs = "-title '" + wcs + "'"
-    args = __parse_column_args(args_dict)    
-    
+    args = __parse_column_args(args_dict)
+
     cmd = domain +'create?name=%s&arg=%s %s' % (db, args,wcs)
     response = requests.get(cmd)
     gaisdb_res =response.json()
@@ -51,7 +51,7 @@ def Show(db):
         for k in d:
             if k != '-indexfield' and k != '-title' and k != '-fieldindex':
                 not_text.update(d[k])
-        
+
         d['text'] = list(set(d['-indexfield']) - not_text)
         print(f.format(type = 'type',column = 'column'))
         print("-"*80)
@@ -121,7 +121,7 @@ def Update(db, rid=0, new_record='', modify_all=False, record_format='text', get
         if getrec == True :
             cmd += '&out=json&getrec=y'
         else :
-            cmd += 'getrec=n'
+            cmd += '&getrec=n'
 
         response = requests.get(cmd)
         gaisdb_res = response.json()
@@ -145,7 +145,7 @@ def Select(db, pattern={}, filter_args={}, mode='', page_cnt=10, page=1, order_b
             return __return(False, response['error'])
 
         cmd = domain + 'query?db=%s&p=%s&ps=%s&out=json' % (db, page, page_cnt)
-        
+
         if type(pattern) == dict and len(pattern) != 0 :
             cmd += '&q=%s' % __build_query(db, pattern)
 
@@ -160,7 +160,7 @@ def Select(db, pattern={}, filter_args={}, mode='', page_cnt=10, page=1, order_b
 
         if type(filter_args) == dict and len(filter_args) != 0 :
             cmd += '&filter=%s' % __build_query(db, filter_args)
-        
+
         response = requests.get(cmd)
         gaisdb_res = response.json()
         if response.status_code == requests.codes.ok :
@@ -180,7 +180,7 @@ def Search(db, term_list='', filter_args={}, mode='', page_cnt=10, page=1, order
             return __return(False, response['error'])
 
         cmd = domain + 'query?db=%s&q=%s&p=%s&ps=%s&out=json' % (db, term_list, page, page_cnt)
-        
+
         if mode in match_mode :
             cmd += '&matchmode=%s' % mode
 
