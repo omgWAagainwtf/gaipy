@@ -20,7 +20,7 @@ def __return(res=True, msg='', data={}):
         'data': data
     }
 
-    return info
+    return json.dumps(info)
 
 
 def __parse_to_gaisrec(key):

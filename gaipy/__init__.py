@@ -9,4 +9,6 @@ __all__ = [
         'Select',
         'Search',
         'Del',
+        'ExactSearch',
+        'QueryRid'
     ]
