@@ -23,6 +23,6 @@ if res_modify_all == True:
                     res_modify_all, 'json', res_get_rec)
 else:
     status = Update(res_db, res_rid, res_record_arg,
-                    res_modify_all, 'json', res_get_rec)
+                    False, 'json', res_get_rec)
 
 print(status)
