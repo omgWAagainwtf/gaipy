@@ -64,7 +64,7 @@ def __get_db_col(db):
         r = json.loads(response.text)
         if 'error' in r:
             raise Exception(r['error'])
-        split_list = r['result']['create_arg'].split(' ')[2:]
+        split_list = r['result']['create_arg'].rstrip(' ').split(' ')[2:]
         d = {}
         for i in range(0, len(split_list), 2):
             d[split_list[i]] = split_list[i+1][1:-1].split(',')
