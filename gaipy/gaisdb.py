@@ -110,7 +110,7 @@ def Update(db, rid=0, new_record='', modify_all=False, record_format='text', get
         if 'error' in response :
             return __return(False, response['error'])
 
-        cmd = domain + 'rupdate?db=%s&rid=%s&format=%s' % (db, rid, record_format)
+        cmd = domain + 'iupdate?db=%s&rid=%s&format=%s' % (db, rid, record_format)
         new_record.replace('"', '\"')
 
         if modify_all == False :
