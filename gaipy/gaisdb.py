@@ -7,7 +7,7 @@ valid_type = {'str', 'list', 'dict'}
 match_mode = {'AndMatch', 'OrMatch', 'BestMatch'}
 type_d = {"num":"-numfieldindex","date":"-dateindex","text":"text","weighted_column":"-title","time":"-timeindex"}
 map_type = {v: k for k, v in type_d.items()}
-domain = 'http://gais.ccu.edu.tw:5801/nudb/'
+domain = 'http://gais.ccu.edu.tw:5803/nudb/'
 
 def Create(db, args_dict={},weighted_col=[]):
     if args_dict == {} :
@@ -204,7 +204,7 @@ def Search(db, term_list='', filter_args={}, mode='', page_cnt=10, page=1, order
             return __return(False, gaisdb_res['error'])
 
 def Del(DB, rid = []):
-    url = 'http://gais.ccu.edu.tw:5801/nudb/rdel'
+    url = 'http://gais.ccu.edu.tw:5803/nudb/rdel'
     if type(rid) != list:
         return __return(False, 'Type Error!, Please pass list of rid.')
     rids = ','.join(str(i) for i in rid)
@@ -243,7 +243,7 @@ def ExactSearch(DB, col='', pattern='', filter_args={}, mode='', page_cnt=10, pa
             return __return(False, gaisdb_res['error'])
 
 def QueryRid(DB, rid=[]):
-    url = 'http://gais.ccu.edu.tw:5801/nudb/rget'
+    url = 'http://gais.ccu.edu.tw:5803/nudb/rget'
     if type(rid) != list:
         return __return(False, 'Type Error!, Please pass list of rid.')
     rids = ','.join(str(i) for i in rid)
