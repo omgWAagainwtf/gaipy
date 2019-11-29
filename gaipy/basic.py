@@ -9,7 +9,7 @@ type_d = {
         "weighted_column": "-title",
         "time": "-timeindex",
     }
-domain = 'http://gais.ccu.edu.tw:5801/nudb/'
+domain = 'http://gais.ccu.edu.tw:5803/nudb/'
 
 
 def __return(res=True, msg='', data={}):
