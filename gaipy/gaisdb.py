@@ -110,7 +110,7 @@ def Update(db, rid=0, new_record='', modify_all=False, record_format='text', get
         if 'error' in response :
             return __return(False, response['error'])
 
-        cmd = domain + 'iupdate?db=%s&rid=%s&format=%s' % (db, rid, record_format)
+        cmd = domain + 'rupdate?db=%s&rid=%s&format=%s' % (db, rid, record_format)
         new_record.replace('"', '\"')
 
         if modify_all == False :
@@ -127,6 +127,7 @@ def Update(db, rid=0, new_record='', modify_all=False, record_format='text', get
         gaisdb_res = response.json()
 
         if response.status_code == requests.codes.ok:
+            Del(db,[rid])
             return __return(True, 'update sucessed', json.dumps(gaisdb_res['result'],ensure_ascii=False))
         else:
             if gaisdb_res['error']['status'] == 400:
